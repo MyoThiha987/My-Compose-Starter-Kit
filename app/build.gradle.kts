@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinXSerialization)
+    alias(libs.plugins.firebasePlugins)
 }
 
 android {
@@ -73,6 +74,7 @@ dependencies {
     implementation(libs.coin.compose)
     debugImplementation(libs.chucker.debug)
     releaseImplementation(libs.chucker.release)
+    implementation(platform(libs.firebase.bom))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "508587546440",
+    "project_id": "my-compose-starter-kit",
+    "storage_bucket": "my-compose-starter-kit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508587546440:android:200d40233056ad7f8fc57d",
+        "android_client_info": {
+          "package_name": "com.mth.mycomposestarterkit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBylPvlg9psXz7TBUoYig7I_Vp57SsafAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

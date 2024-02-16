@@ -10,8 +10,10 @@ activity-compose = "1.8.2"
 compose-bom = "2024.02.00"
 blur = "0.4.5"
 ktor = "2.3.7"
-chucker ="4.0.0"
-coin ="2.5.0"
+chucker = "4.0.0"
+coin = "2.5.0"
+firebase-plugins = "4.4.1"
+firebase-bom = "32.7.2"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -29,21 +31,22 @@ ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
 haze-blur = { group = "dev.chrisbanes.haze", name = "haze-jetpack-compose", version.ref = "blur" }
-ktor-client-core = { group = "io.ktor", name="ktor-client-core" ,version.ref = "ktor" }
-ktor-client-android = { group = "io.ktor", name="ktor-client-android" ,version.ref = "ktor" }
-ktor-client-negotiation = { group = "io.ktor", name="ktor-client-content-negotiation" ,version.ref = "ktor" }
-ktor-client-okhttp = { group = "io.ktor", name="ktor-client-okhttp" ,version.ref = "ktor" }
-serialization-kotlinx = { group = "io.ktor", name="ktor-serialization-kotlinx-json" ,version.ref = "ktor" }
-ktor-logging = { group = "io.ktor", name="ktor-client-logging" ,version.ref = "ktor" }
-lifecycle-viewmodel = { group = "androidx.lifecycle", name="lifecycle-viewmodel-ktx" ,version.ref = "lifecycle-runtime-ktx" }
-lifecycle-compose = { group = "androidx.lifecycle", name="lifecycle-runtime-compose" ,version.ref = "lifecycle-runtime-ktx" }
-chucker-debug = { group = "com.github.chuckerteam.chucker", name="library" ,version.ref = "chucker" }
-chucker-release = { group = "com.github.chuckerteam.chucker", name="library-no-op" ,version.ref = "chucker" }
-coin_compose = { group = "io.coil-kt", name="coil-compose" ,version.ref = "coin" }
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
+ktor-client-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+serialization-kotlinx = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle-runtime-ktx" }
+lifecycle-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle-runtime-ktx" }
+chucker-debug = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
+chucker-release = { group = "com.github.chuckerteam.chucker", name = "library-no-op", version.ref = "chucker" }
+coin_compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coin" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinXSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-
+firebasePlugins = { id = "com.google.gms.google-services", version.ref = "firebase-plugins" }
