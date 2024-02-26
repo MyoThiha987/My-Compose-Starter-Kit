@@ -130,10 +130,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.surface
                 ) {
+                    ProfileScreen()
                     //HomeScreen()
                    // DetailScreen()
                     //SelectSeatScreen()
-                    PaymentScreen()
+                    //PaymentScreen()
+                    //TicketListScreen()
+                    //MyTicketDetailScreen()
                     /*AnimatedBorder(
                         modifier = Modifier
                             .fillMaxWidth()

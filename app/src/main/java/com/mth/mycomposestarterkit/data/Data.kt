@@ -22,16 +22,46 @@ fun getMovieList(): List<MovieVO> {
             date = "November 2021"
         ),
         MovieVO(
-            id = 1,
+            id = 3,
             title = "No Time to die",
             imageUrl = "https://image.tmdb.org/t/p/original/eqWaeh21e4ZgHjwpULZVHCGIq9X.jpg",
             date = "November 2021"
         ),
         MovieVO(
-            id = 2,
+            id = 4,
             title = "Shang Chi",
             imageUrl = "https://image.tmdb.org/t/p/original/1BIoJGKbXjdFDAqUEiA2VHqkK1Z.jpg",
             date = "November 2021"
+        )
+    )
+}
+
+fun getMenu(): List<MenuVO> {
+    return mutableListOf(
+        MenuVO(
+            id = 1,
+            name = "My Ticket",
+            icon = R.drawable.ic_ticket,
+        ),
+        MenuVO(
+            id = 2,
+            name = "Payment history",
+            icon = R.drawable.ic_shopping_cart,
+        ),
+        MenuVO(
+            id = 3,
+            name = "Change language",
+            icon = R.drawable.ic_language,
+        ),
+        MenuVO(
+            id = 4,
+            name = "Change password",
+            icon = R.drawable.ic_lock,
+        ),
+        MenuVO(
+            id = 5,
+            name = "Face ID/Touch ID",
+            icon = R.drawable.ic_security,
         )
     )
 }
@@ -180,6 +210,12 @@ data class DateTimeVO(
     val day: String,
     val time: List<String> = listOf(),
     var isSelected: Boolean = false
+)
+
+data class MenuVO(
+    val id : Int,
+    val name : String,
+    val icon : Int
 )
 
 data class SeatVO(

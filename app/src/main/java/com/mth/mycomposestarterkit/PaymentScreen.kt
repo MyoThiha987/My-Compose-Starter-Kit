@@ -1,21 +1,24 @@
 package com.mth.mycomposestarterkit
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
@@ -43,11 +46,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mth.mycomposestarterkit.components.IconTextView
 import com.mth.mycomposestarterkit.components.MovieImageView
+import com.mth.mycomposestarterkit.data.CinemaVO
 import com.mth.mycomposestarterkit.data.MovieVO
 import com.mth.mycomposestarterkit.data.getCinemas
 import com.mth.mycomposestarterkit.ui.theme.Black
@@ -94,64 +99,147 @@ fun PaymentScreen(modifier: Modifier = Modifier) {
             imageUrl = "https://image.tmdb.org/t/p/original/eqWaeh21e4ZgHjwpULZVHCGIq9X.jpg",
             date = "November 2021"
         )
-        LazyColumn(
-            modifier = Modifier.padding(16.dp),
-            contentPadding = padding,
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            item {
-                MovieInfoItemView(data = movie)
-                SpaceBetweenTextView(
-                    text = "Order ID",
-                    "78889377726",
-                    subTextColor = White,
-                    subTextFontSize = 16.sp
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                SpaceBetweenTextView(
-                    text = "Seat",
-                    "H7, H8",
-                    subTextColor = White,
-                    subTextFontSize = 16.sp
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                DiscountItemView(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
-                    leadingIcon = Icons.Default.Search
-                )
-                HorizontalDivider(
-                    thickness = 1.dp,
-                    color = Black,
-                    modifier = Modifier.padding(vertical = 24.dp)
-                )
-                SpaceBetweenTextView(
-                    text = "Total",
-                    "210.000VND",
-                    subTextColor = Yellow,
-                    subTextFontSize = 24.sp
-                )
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 12.dp),
-                    text = "Cinema",
-                    color = Color.White,
-                    style = TextStyle(
-                        platformStyle = PlatformTextStyle(includeFontPadding = false)
-                    ),
-                    fontSize = 20.sp,
-                    lineHeight = 30.sp
-                )
+        Column (modifier=Modifier.fillMaxWidth().padding(16.dp)){
+            LazyColumn(
+                modifier = Modifier
+                    .weight(0.7f),
+                contentPadding = padding,
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                item {
+                    MovieInfoItemView(data = movie)
+                    SpaceBetweenTextView(
+                        text = "Order ID",
+                        subText = "78889377726",
+                        subTextColor = White,
+                        subTextFontSize = 16.sp
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    SpaceBetweenTextView(
+                        text = "Seat",
+                        subText = "H7, H8",
+                        subTextColor = White,
+                        subTextFontSize = 16.sp
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    DiscountItemView(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        leadingIcon = Icons.Default.Search
+                    )
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = Black,
+                        modifier = Modifier.padding(vertical = 24.dp)
+                    )
+                    SpaceBetweenTextView(
+                        text = "Total",
+                        subText = "210.000VND",
+                        subTextColor = Yellow,
+                        subTextFontSize = 24.sp
+                    )
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 12.dp, bottom = 4.dp),
+                        text = "Payment Method",
+                        color = Color.White,
+                        style = TextStyle(
+                            platformStyle = PlatformTextStyle(includeFontPadding = false)
+                        ),
+                        fontSize = 20.sp,
+                        lineHeight = 30.sp
+                    )
+                }
+                items(
+                    items = getCinemas(),
+                    key = { cinema -> cinema.id }
+                ) { cinema ->
+                    PaymentMethodItemView(data = cinema, horizontalPadding = 0.dp)
+                }
+                item {
+                    SpaceBetweenTextView(
+                        modifier = Modifier
+                            .background(
+                                color = Yellow.copy(alpha = 0.1f),
+                                RoundedCornerShape(12.dp)
+                            )
+                            .padding(12.dp),
+                        text = "Complete your payment in",
+                        subText = "15:00",
+                        subTextColor = Yellow
+                    )
+                }
             }
-            items(
-                items = getCinemas(),
-                key = { cinema -> cinema.id }
-            ) { cinema ->
-                CinemaItem(data = cinema, horizontalPadding = 0.dp)
+            ElevatedButton(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth()
+                    .height(50.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Yellow),
+                onClick = { }
+            ) {
+                Text(
+                    text = "Purchase",
+                    fontSize = 20.sp,
+                    color = Color.Black
+                )
             }
         }
+    }
+}
+
+@Composable
+fun PaymentMethodItemView(
+    modifier: Modifier = Modifier,
+    data: CinemaVO,
+    horizontalPadding: Dp = 16.dp
+) {
+    Row(
+        modifier = modifier
+            .padding(horizontal = horizontalPadding)
+            .padding(bottom = 6.dp)
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .clip(RoundedCornerShape(12.dp))
+            .background(color = if (data.isClicked) Yellow.copy(alpha = 0.1f) else Black)
+            .border(
+                width = 1.dp,
+                color = if (data.isClicked) Yellow else Color.Transparent,
+                RoundedCornerShape(12.dp)
+            )
+            .clickable {
+
+            },
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Row(
+            modifier = Modifier
+                .weight(0.8f)
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            MovieImageView(
+                modifier = Modifier
+                    .width(70.dp)
+                    .height(40.dp),
+                data = R.drawable.zalo_pay
+            )
+            Text(
+                modifier = Modifier,
+                text = "Zalo Pay",
+                color = White,
+                fontSize = 14.sp,
+            )
+        }
+        MovieImageView(
+            modifier = Modifier
+                .padding(horizontal = 12.dp)
+                .size(24.dp),
+            data = R.drawable.ic_arrow_forward
+        )
     }
 }
 
@@ -213,13 +301,14 @@ fun DiscountItemView(modifier: Modifier = Modifier, leadingIcon: ImageVector) {
 
 @Composable
 fun SpaceBetweenTextView(
+    modifier: Modifier = Modifier,
     text: String,
     subText: String,
     subTextColor: Color,
-    subTextFontSize: TextUnit
+    subTextFontSize: TextUnit = 16.sp
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -257,7 +346,8 @@ fun MovieInfoItemView(modifier: Modifier = Modifier, data: MovieVO) {
             MovieImageView(
                 modifier = Modifier
                     .width(100.dp)
-                    .height(141.dp), data = data.imageUrl
+                    .fillMaxHeight()
+                    , data = data.imageUrl
             )
 
             Column(
@@ -272,6 +362,7 @@ fun MovieInfoItemView(modifier: Modifier = Modifier, data: MovieVO) {
                     text = data.title,
                     color = Yellow,
                     fontSize = 20.sp,
+                    maxLines = 1,
                     fontWeight = FontWeight.Bold
                 )
                 IconTextView(
