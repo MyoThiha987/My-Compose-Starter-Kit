@@ -127,9 +127,13 @@ class MainActivity : ComponentActivity() {
                 val state = rememberLazyListState()
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surface
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.surface
                 ) {
-                    HomeScreen()
+                    //HomeScreen()
+                   // DetailScreen()
+                    //SelectSeatScreen()
+                    PaymentScreen()
                     /*AnimatedBorder(
                         modifier = Modifier
                             .fillMaxWidth()

@@ -8,12 +8,15 @@ espresso-core = "3.5.1"
 lifecycle-runtime-ktx = "2.6.2"
 activity-compose = "1.8.2"
 compose-bom = "2024.02.00"
-blur = "0.4.5"
+blur = "0.5.3"
 ktor = "2.3.7"
 chucker = "4.0.0"
 coin = "2.5.0"
 firebase-plugins = "4.4.1"
 firebase-bom = "32.7.2"
+accompanish-pager-indicator = "0.28.0"
+constraint-layout = "1.0.1"
+
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -30,7 +33,7 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
-haze-blur = { group = "dev.chrisbanes.haze", name = "haze-jetpack-compose", version.ref = "blur" }
+haze-blur = { group = "dev.chrisbanes.haze", name = "haze-materials", version.ref = "blur" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
 ktor-client-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
@@ -43,8 +46,9 @@ chucker-debug = { group = "com.github.chuckerteam.chucker", name = "library", ve
 chucker-release = { group = "com.github.chuckerteam.chucker", name = "library-no-op", version.ref = "chucker" }
 coin_compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coin" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
-
-
+accompanish-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanish-pager-indicator" }
+accompanish-pager-indicator = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanish-pager-indicator" }
+constraint-layout={ module ="androidx.constraintlayout:constraintlayout-compose" , version.ref="constraint-layout" }
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

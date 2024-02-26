@@ -1,147 +1,235 @@
 package com.mth.mycomposestarterkit
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.ScrollableDefaults
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
+import com.mth.mycomposestarterkit.components.HorizontalTitleSection
+import com.mth.mycomposestarterkit.components.IconTextView
+import com.mth.mycomposestarterkit.components.LabelAndContentSection
+import com.mth.mycomposestarterkit.components.MovieImageView
+import com.mth.mycomposestarterkit.data.MovieVO
+import com.mth.mycomposestarterkit.data.ServiceVO
+import com.mth.mycomposestarterkit.data.getMovieList
+import com.mth.mycomposestarterkit.data.getServices
 import com.mth.mycomposestarterkit.ui.theme.DarkBlue
-import com.mth.mycomposestarterkit.ui.theme.Grey
-import com.mth.mycomposestarterkit.ui.theme.Grey30
+import com.mth.mycomposestarterkit.ui.theme.White
+import com.mth.mycomposestarterkit.ui.theme.White87
+import com.mth.mycomposestarterkit.ui.theme.Yellow
 
 /**
  * @Author myothiha
  * Created 15/02/2024 at 1:53 PM.
  **/
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    val scrollState = rememberLazyListState()
-    val movies = mutableListOf(
-        MovieVO(
-            id = 1,
-            title = "No Time to die",
-            imageUrl = "https://image.tmdb.org/t/p/original/eqWaeh21e4ZgHjwpULZVHCGIq9X.jpg",
-            date = "November 2021"
-        ),
-        MovieVO(
-            id = 2,
-            title = "Shang Chi",
-            imageUrl = "https://image.tmdb.org/t/p/original/1BIoJGKbXjdFDAqUEiA2VHqkK1Z.jpg",
-            date = "November 2021"
-        ),
-        MovieVO(
-            id = 1,
-            title = "No Time to die",
-            imageUrl = "https://image.tmdb.org/t/p/original/eqWaeh21e4ZgHjwpULZVHCGIq9X.jpg",
-            date = "November 2021"
-        ),
-        MovieVO(
-            id = 2,
-            title = "Shang Chi",
-            imageUrl = "https://image.tmdb.org/t/p/original/1BIoJGKbXjdFDAqUEiA2VHqkK1Z.jpg",
-            date = "November 2021"
-        )
-    )
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    state: LazyListState = rememberLazyListState()
+) {
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .background(color = DarkBlue),
-        state = scrollState,
-        contentPadding = PaddingValues(bottom = 16.dp)
+        state = state,
+        contentPadding = PaddingValues(0.dp)
     ) {
         item {
             HeaderSection(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
                     .fillMaxWidth()
                     .wrapContentHeight()
             )
 
-            SearchSection(
+            SearchMovieSection(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
-                    .padding(bottom = 12.dp)
+                    .padding(bottom = 16.dp)
                     .fillMaxWidth()
-                    .wrapContentHeight()
-                    .clip(shape = RoundedCornerShape(8.dp))
-                    .background(color = Grey30)
-                    .padding(15.dp, 18.dp, 15.dp, 18.dp)
+                    .wrapContentHeight(),
+                leadingIcon = Icons.Default.Search
             )
 
-            MovieSection(
+            CarouselMovieSection()
+
+            LabelAndContentSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .padding(bottom = 12.dp),
+                    .padding(vertical = 16.dp),
                 title = "Coming Soon",
-                isSeeAllShowed = false,
-                content = {
-                    ComingSoonHorizontalMovieSection(
+                isSeeAllShowed = true
+            ) {
+                HorizontalTitleSection(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    list = getMovieList(),
+                    usedFlingBehavior = false
+                ) { movie ->
+                    ComingSoonMovieView(
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        data = movie
                     )
                 }
-            )
 
-            MovieSection(
+            }
+
+
+            LabelAndContentSection(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                title = "Promotion & Discount",
+                isSeeAllShowed = true
+            ) {
+                PromotionTitleSection(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    list = getMovieList(),
+                    usedFlingBehavior = true
+                )
+            }
+
+            LabelAndContentSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .padding(bottom = 12.dp),
-                title = "Cinema Near You",
+                    .padding(vertical = 16.dp),
+                title = "Service",
                 isSeeAllShowed = true,
-            )
-        }
+            ) {
+                HorizontalTitleSection(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    list = getServices(),
+                    usedFlingBehavior = false
+                ) { service ->
+                    ServiceView(
+                        modifier = Modifier
+                            .wrapContentHeight(),
+                        data = service
+                    )
+                }
 
+            }
 
-        items(items = movies) {
-            CinemaNearYouMovieView(
+            LabelAndContentSection(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 12.dp),
-                data = it
+                    .wrapContentHeight(),
+                title = "Movie news",
+                isSeeAllShowed = true
+            ) {
+                HorizontalTitleSection(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    list = getMovieList(),
+                    usedFlingBehavior = false
+                ) { movie ->
+                    MovieNewsView(
+                        modifier = Modifier
+                            .wrapContentHeight(),
+                        data = movie
+                    )
+                }
+
+            }
+
+
+        }
+    }
+}
+
+@Composable
+fun SearchMovieSection(modifier: Modifier = Modifier, leadingIcon: ImageVector) {
+    Row(
+        modifier = modifier
+    ) {
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
+                .background(color = Color.Gray.copy(alpha = 0.2f)),
+            shape = RoundedCornerShape(12.dp),
+            colors = TextFieldDefaults.outlinedTextFieldColors(focusedBorderColor = Color(0xFF8C8C8C)),
+            value = "",
+            onValueChange = {},
+            leadingIcon = {
+                Icon(imageVector = leadingIcon, contentDescription = null, tint = White)
+            },
+            placeholder = { Text(text = "Search", color = White) })
+    }
+
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun PromotionTitleSection(
+    modifier: Modifier = Modifier,
+    list: List<MovieVO>,
+    usedFlingBehavior: Boolean,
+    state: LazyListState = rememberLazyListState()
+) {
+    LazyRow(
+        state = state,
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        flingBehavior = if (usedFlingBehavior) rememberSnapFlingBehavior(lazyListState = state) else ScrollableDefaults.flingBehavior()
+    ) {
+        items(items = list) { data ->
+            PromotionAndMovieView(
+                modifier = Modifier
+                    .fillParentMaxWidth()
+                    .wrapContentHeight(),
+                data = data
             )
         }
-
-
     }
+
 }
 
 @Composable
@@ -157,153 +245,27 @@ fun HeaderSection(modifier: Modifier = Modifier) {
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Welcome Back,",
-                color = Grey,
-                fontSize = 14.sp,
-                fontWeight = FontWeight(400),
+                text = "Hi,Myo Thiha",
+                color = White,
+                fontSize = 16.sp,
                 lineHeight = 21.sp
             )
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Myo Thiha",
+                text = "Welcome back",
                 color = Color.White,
-                fontSize = 18.sp,
-                fontWeight = FontWeight(500),
-                lineHeight = 27.sp
+                fontSize = 20.sp,
+                lineHeight = 20.sp
             )
         }
+
         Image(
-            modifier = Modifier.size(48.dp),
-            painter = painterResource(id = R.drawable.profile),
+            modifier = Modifier.size(32.dp),
+            painter = painterResource(id = R.drawable.ic_notification),
             contentDescription = null
         )
     }
-}
-
-@Composable
-fun SearchSection(modifier: Modifier = Modifier) {
-
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            modifier = Modifier.size(24.dp),
-            imageVector = Icons.Default.Search,
-            contentDescription = null,
-            tint = Grey
-        )
-        Spacer(modifier = Modifier.size(12.dp))
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = "Search your favourite movies",
-            color = Grey,
-            fontSize = 14.sp,
-            fontWeight = FontWeight(400),
-            lineHeight = 21.sp
-        )
-    }
-}
-
-@Composable
-fun MovieSection(
-    modifier: Modifier = Modifier,
-    title: String,
-    isSeeAllShowed: Boolean = false,
-    content: @Composable () -> Unit = {}
-) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-
-        Row(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                modifier = Modifier.weight(0.8f),
-                text = title,
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight(600),
-                lineHeight = 30.sp
-            )
-
-            AnimatedVisibility(
-                visible = isSeeAllShowed,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkHorizontally()
-            ) {
-                Text(
-                    modifier = Modifier.wrapContentSize(),
-                    text = "See all",
-                    color = Grey,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight(300),
-                    lineHeight = 21.sp
-                )
-            }
-
-
-        }
-        content()
-    }
-
-}
-
-@Composable
-fun ComingSoonHorizontalMovieSection(
-    modifier: Modifier = Modifier
-) {
-
-
-    val movies = mutableListOf(
-        MovieVO(
-            id = 1,
-            title = "No Time to die",
-            imageUrl = "https://image.tmdb.org/t/p/original/eqWaeh21e4ZgHjwpULZVHCGIq9X.jpg",
-            date = "November 2021"
-        ),
-        MovieVO(
-            id = 2,
-            title = "Shang Chi",
-            imageUrl = "https://image.tmdb.org/t/p/original/1BIoJGKbXjdFDAqUEiA2VHqkK1Z.jpg",
-            date = "November 2021"
-        ),
-        MovieVO(
-            id = 1,
-            title = "No Time to die",
-            imageUrl = "https://image.tmdb.org/t/p/original/eqWaeh21e4ZgHjwpULZVHCGIq9X.jpg",
-            date = "November 2021"
-        ),
-        MovieVO(
-            id = 2,
-            title = "Shang Chi",
-            imageUrl = "https://image.tmdb.org/t/p/original/1BIoJGKbXjdFDAqUEiA2VHqkK1Z.jpg",
-            date = "November 2021"
-        )
-    )
-    LazyRow(
-        state = rememberLazyListState(),
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        contentPadding = PaddingValues(horizontal = 16.dp),
-    ) {
-        items(items = movies) { movie ->
-            ComingSoonMovieView(
-                modifier = Modifier
-                    .fillParentMaxWidth()
-                    .wrapContentHeight(),
-                data = movie
-            )
-        }
-    }
-
 }
 
 @Composable
@@ -311,72 +273,109 @@ fun ComingSoonMovieView(
     modifier: Modifier = Modifier,
     data: MovieVO,
 ) {
-
-
     Column(modifier = modifier) {
         Card {
             MovieImageView(
                 modifier = Modifier
-                    .height(180.dp),
+                    .width(180.dp)
+                    .height(240.dp),
                 data = data.imageUrl
             )
         }
-
         Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
+            modifier = Modifier.padding(vertical = 12.dp),
             text = data.title,
-            color = Color.White,
-            fontSize = 20.sp,
-            fontWeight = FontWeight(600),
-            lineHeight = 30.sp
+            color = Yellow,
+            fontSize = 18.sp,
+            fontWeight = FontWeight(200)
+        )
+        IconTextView(
+            text = "Adventure, Sci-fi",
+            drawableRes = R.drawable.video,
+            textColor = White87
+        )
+        IconTextView(
+            text = data.date,
+            drawableRes = R.drawable.ic_calendar,
+            textColor = White87
         )
 
     }
-
-
 }
 
 @Composable
-fun CinemaNearYouMovieView(
+fun MovieNewsView(
     modifier: Modifier = Modifier,
     data: MovieVO,
 ) {
-
-    Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Row {
+    Column(modifier = modifier) {
+        Card {
             MovieImageView(
                 modifier = Modifier
-                    .size(100.dp),
+                    .width(239.dp)
+                    .height(186.dp),
                 data = data.imageUrl
             )
-
         }
-
+        Text(
+            modifier = Modifier.padding(vertical = 12.dp),
+            text = data.title,
+            color = White,
+            fontSize = 16.sp,
+            fontWeight = FontWeight(200),
+            lineHeight = 12.sp
+        )
     }
+}
 
+
+@Composable
+fun LazyItemScope.PromotionAndMovieView(
+    modifier: Modifier = Modifier,
+    data: MovieVO,
+) {
+    Column(modifier = modifier) {
+        Card(shape = RoundedCornerShape(12.dp)) {
+            MovieImageView(
+                modifier = Modifier
+                    .fillParentMaxWidth()
+                    .height(224.dp),
+                data = data.imageUrl
+            )
+        }
+    }
 }
 
 @Composable
-fun MovieImageView(modifier: Modifier = Modifier, data: String) {
-    AsyncImage(
-        model = data,
-        contentDescription = null,
+fun ServiceView(
+    modifier: Modifier = Modifier,
+    data: ServiceVO,
+) {
+    Column(
         modifier = modifier,
-        contentScale = ContentScale.Crop,
-    )
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Card(shape = CircleShape) {
+            MovieImageView(
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(CircleShape),
+                data = data.image
+            )
+        }
+        Text(
+            modifier = Modifier
+                .width(100.dp)
+                .padding(top = 12.dp),
+            text = data.name,
+            color = White,
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
+            textAlign = TextAlign.Center
+        )
+    }
 }
-
-data class MovieVO(
-    val id: Int,
-    val title: String,
-    val imageUrl: String,
-    val date: String
-)
 
 
 @Composable
@@ -387,5 +386,52 @@ fun HomeScreenPreview() {
             .fillMaxSize()
     ) {
         HomeScreen()
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ComingSoonMoviePreview() {
+    Column(
+        modifier = Modifier
+            .wrapContentSize()
+    ) {
+        ComingSoonMovieView(
+            data = MovieVO(
+                id = 1,
+                title = "No Time to die",
+                imageUrl = "https://image.tmdb.org/t/p/original/eqWaeh21e4ZgHjwpULZVHCGIq9X.jpg",
+                date = "November 2021"
+            )
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ServicePreview() {
+    Column(
+        modifier = Modifier
+            .wrapContentSize()
+    ) {
+        ServiceView(
+            data = ServiceVO(
+                id = 1,
+                name = "No Time to die",
+                image = R.drawable.discount,
+            )
+        )
+    }
+}
+
+
+@Composable
+@Preview(showBackground = true)
+fun SearchMoviePreview() {
+    Column(
+        modifier = Modifier
+            .wrapContentSize()
+    ) {
+       // SearchMovieSection()
     }
 }
