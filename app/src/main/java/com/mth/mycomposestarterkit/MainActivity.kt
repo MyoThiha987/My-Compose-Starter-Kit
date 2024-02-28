@@ -130,7 +130,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.surface
                 ) {
-                    ProfileScreen()
+                    MoviesScreen()
+                    //ProfileScreen()
                     //HomeScreen()
                    // DetailScreen()
                     //SelectSeatScreen()
@@ -307,7 +308,6 @@ interface PostDataSource {
                 }
 
                 defaultRequest {
-
                     contentType(ContentType.Application.Json)
                     accept(ContentType.Application.Json)
                 }
