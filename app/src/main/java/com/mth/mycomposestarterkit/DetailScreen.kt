@@ -52,6 +52,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.mth.mycomposestarterkit.components.HorizontalTitleSection
 import com.mth.mycomposestarterkit.components.LabelAndContentSection
 import com.mth.mycomposestarterkit.components.MovieImageView
@@ -483,7 +485,7 @@ fun DetailScreenPreview() {
         modifier = Modifier
             .wrapContentSize()
     ) {
-        DetailScreen()
+       // DetailScreen()
     }
 }
 

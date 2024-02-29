@@ -100,7 +100,7 @@ fun SelectSeatScreen(modifier: Modifier = Modifier) {
                     .padding(padding),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                // TV Screen
+                // TV Destination
                 item {
                     MovieImageView(
                         modifier = Modifier

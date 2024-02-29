@@ -78,6 +78,8 @@ dependencies {
     implementation(libs.accompanish.pager)
     implementation(libs.accompanish.pager.indicator)
     implementation(libs.constraint.layout)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

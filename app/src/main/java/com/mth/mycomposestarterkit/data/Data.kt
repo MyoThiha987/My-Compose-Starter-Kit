@@ -1,5 +1,6 @@
 package com.mth.mycomposestarterkit.data
 
+import com.mth.mycomposestarterkit.Destination
 import com.mth.mycomposestarterkit.R
 
 /**
@@ -146,7 +147,7 @@ fun getSeats(): List<SeatVO> {
                 SeatVO(
                     id = (row - 2) * 10 + (column.code - 'A'.code) + 1,
                     no = "$column$row",
-                    status = if("$column$row" == "A3") 2 else if("$column$row" == "J10") 1 else 0
+                    status = if ("$column$row" == "A3") 2 else if ("$column$row" == "J10") 1 else 0
                 )
             )
         }
@@ -213,15 +214,15 @@ data class DateTimeVO(
 )
 
 data class MenuVO(
-    val id : Int,
-    val name : String,
-    val icon : Int
+    val id: Int,
+    val name: String,
+    val icon: Int
 )
 
 data class SeatVO(
     val id: Int,
     val no: String,
-    val status : Int =0
+    val status: Int = 0
 )
 
 data class CinemaVO(
@@ -250,4 +251,33 @@ data class MovieVO(
     val title: String,
     val imageUrl: String,
     val date: String
+)
+
+data class BottomNavItem(
+    val title: String,
+    val icon: Int,
+    val route: String
+)
+
+val bottomNavItemList = listOf(
+    BottomNavItem(
+        title = "Home",
+        icon = R.drawable.ic_home,
+        route = Destination.HomeScreen.title
+    ),
+    BottomNavItem(
+        title = "Ticket",
+        icon = R.drawable.ic_ticket_menu,
+        route = Destination.TicketScreen.title
+    ),
+    BottomNavItem(
+        title = "Movies",
+        icon = R.drawable.ic_video_menu,
+        route = Destination.MoviesScreen.title
+    ),
+    BottomNavItem(
+        title = "Account",
+        icon = R.drawable.ic_user,
+        route = Destination.AccountScreen.title
+    )
 )

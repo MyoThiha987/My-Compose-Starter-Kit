@@ -8,20 +8,23 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabPosition
 import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,11 +36,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
+import com.mth.mycomposestarterkit.data.MovieVO
+import com.mth.mycomposestarterkit.data.getMovieList
 import com.mth.mycomposestarterkit.ui.theme.Black
 import com.mth.mycomposestarterkit.ui.theme.White
 import com.mth.mycomposestarterkit.ui.theme.Yellow
@@ -66,9 +71,34 @@ fun MoviesScreen(modifier: Modifier = Modifier) {
         HorizontalPager(
             count = tabList.size,
             state = pagerState
-        ) {}
+        ) {
+            when (it) {
+                0 -> MoviesScreen(showAll = true)
+                1 -> MoviesScreen(showAll = false)
+            }
+        }
     }
 }
+
+@Composable
+fun MoviesScreen(showAll: Boolean) {
+    LazyVerticalGrid(
+        modifier = Modifier.fillMaxSize(),
+        state = rememberLazyGridState(),
+        contentPadding = PaddingValues(16.dp),
+        columns = GridCells.Fixed(count = 2),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+       val data = if (showAll) getMovieList() else getMovieList().subList(0, 2)
+        items(items = data) { data: MovieVO ->
+            ComingSoonMovieView(data =data, navController = rememberNavController())
+        }
+
+    }
+}
+
+
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -121,11 +151,11 @@ private fun HomeTabIndicator(
             if (pagerState.currentPage isTransitioningTo pagerState.targetPage) {
                 // Indicator moves to the right.
                 // Low stiffness spring for the left edge so it moves slower than the right edge.
-                spring(stiffness = Spring.StiffnessVeryLow)
+                spring(stiffness = Spring.StiffnessMedium)
             } else {
                 // Indicator moves to the left.
                 // Medium stiffness spring for the left edge so it moves faster than the right edge.
-                spring(stiffness = Spring.StiffnessMedium)
+                spring(stiffness = Spring.StiffnessLow)
             }
         },
         label = "Indicator left"
@@ -138,11 +168,11 @@ private fun HomeTabIndicator(
             if (pagerState.currentPage isTransitioningTo pagerState.targetPage) {
                 // Indicator moves to the right
                 // Medium stiffness spring for the right edge so it moves faster than the left edge.
-                spring(stiffness = Spring.StiffnessMedium)
+                spring(stiffness = Spring.StiffnessLow)
             } else {
                 // Indicator moves to the left.
                 // Low stiffness spring for the right edge so it moves slower than the left edge.
-                spring(stiffness = Spring.StiffnessVeryLow)
+                spring(stiffness = Spring.StiffnessMedium)
             }
         },
         label = "Indicator right"
@@ -170,8 +200,6 @@ private fun HomeTabIndicator(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TabItem(
-    //tabPositions: List<TabPosition>,
-    //tabPage: Int,
     index: Int,
     pagerState: PagerState,
     text: String
@@ -181,7 +209,7 @@ fun TabItem(
 
 
     Tab(
-        modifier =Modifier.zIndex(6f),
+        modifier = Modifier.zIndex(6f),
         text = {
             Text(
                 text = text,

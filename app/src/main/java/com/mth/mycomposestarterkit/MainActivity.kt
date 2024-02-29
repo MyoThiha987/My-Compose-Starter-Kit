@@ -79,6 +79,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.mth.mycomposestarterkit.ui.theme.MyComposeStarterKitTheme
@@ -130,9 +131,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.surface
                 ) {
-                    MoviesScreen()
+                    val navController = rememberNavController()
+                    MainScreen(navController = navController)
                     //ProfileScreen()
-                    //HomeScreen()
+                    //HomeDestination()
                    // DetailScreen()
                     //SelectSeatScreen()
                     //PaymentScreen()

@@ -16,6 +16,8 @@ firebase-plugins = "4.4.1"
 firebase-bom = "32.7.2"
 accompanish-pager-indicator = "0.28.0"
 constraint-layout = "1.0.1"
+hilt_navigation_compose = "1.2.0"
+navigation_compose = "2.7.7"
 
 
 [libraries]
@@ -49,6 +51,9 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 accompanish-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanish-pager-indicator" }
 accompanish-pager-indicator = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanish-pager-indicator" }
 constraint-layout={ module ="androidx.constraintlayout:constraintlayout-compose" , version.ref="constraint-layout" }
+hilt_navigation_compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt_navigation_compose" }
+navigation_compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation_compose" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

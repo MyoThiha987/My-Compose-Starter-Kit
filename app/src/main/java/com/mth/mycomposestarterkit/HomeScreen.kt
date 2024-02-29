@@ -1,8 +1,15 @@
 package com.mth.mycomposestarterkit
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
@@ -44,6 +51,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.mth.mycomposestarterkit.components.HorizontalTitleSection
 import com.mth.mycomposestarterkit.components.IconTextView
 import com.mth.mycomposestarterkit.components.LabelAndContentSection
@@ -52,7 +61,6 @@ import com.mth.mycomposestarterkit.data.MovieVO
 import com.mth.mycomposestarterkit.data.ServiceVO
 import com.mth.mycomposestarterkit.data.getMovieList
 import com.mth.mycomposestarterkit.data.getServices
-import com.mth.mycomposestarterkit.ui.theme.DarkBlue
 import com.mth.mycomposestarterkit.ui.theme.White
 import com.mth.mycomposestarterkit.ui.theme.White87
 import com.mth.mycomposestarterkit.ui.theme.Yellow
@@ -61,16 +69,19 @@ import com.mth.mycomposestarterkit.ui.theme.Yellow
  * @Author myothiha
  * Created 15/02/2024 at 1:53 PM.
  **/
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
+    navController: NavController = rememberNavController(),
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState()
 ) {
 
     LazyColumn(
         modifier = modifier
+            .padding(bottom = 80.dp)
             .fillMaxSize()
-            .background(color = DarkBlue),
+            .background(color = Color.Black),
         state = state,
         contentPadding = PaddingValues(0.dp)
     ) {
@@ -91,7 +102,7 @@ fun HomeScreen(
                 leadingIcon = Icons.Default.Search
             )
 
-            CarouselMovieSection()
+            //CarouselMovieSection()
 
             LabelAndContentSection(
                 modifier = Modifier
@@ -107,14 +118,19 @@ fun HomeScreen(
                     list = getMovieList(),
                     usedFlingBehavior = false
                 ) { movie ->
+
                     ComingSoonMovieView(
                         modifier = Modifier
-                            .wrapContentHeight(),
-                        data = movie
+                            .wrapContentHeight().animateItemPlacement(
+
+                            ),
+                        data = movie,
+                        navController = navController
                     )
                 }
 
             }
+
 
 
             LabelAndContentSection(
@@ -272,13 +288,17 @@ fun HeaderSection(modifier: Modifier = Modifier) {
 fun ComingSoonMovieView(
     modifier: Modifier = Modifier,
     data: MovieVO,
+    navController: NavController
 ) {
     Column(modifier = modifier) {
         Card {
             MovieImageView(
                 modifier = Modifier
                     .width(180.dp)
-                    .height(240.dp),
+                    .height(240.dp)
+                    .clickable {
+                        navController.navigate(route = Destination.MovieDetailScreen.title)
+                    },
                 data = data.imageUrl
             )
         }
@@ -396,14 +416,15 @@ fun ComingSoonMoviePreview() {
         modifier = Modifier
             .wrapContentSize()
     ) {
-        ComingSoonMovieView(
+        /*ComingSoonMovieView(
             data = MovieVO(
                 id = 1,
                 title = "No Time to die",
                 imageUrl = "https://image.tmdb.org/t/p/original/eqWaeh21e4ZgHjwpULZVHCGIq9X.jpg",
                 date = "November 2021"
-            )
-        )
+            ),
+            navController = rememberNavController()
+        )*/
     }
 }
 
@@ -432,6 +453,6 @@ fun SearchMoviePreview() {
         modifier = Modifier
             .wrapContentSize()
     ) {
-       // SearchMovieSection()
+        // SearchMovieSection()
     }
 }
